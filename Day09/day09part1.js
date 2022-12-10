@@ -6,78 +6,54 @@ const data = fs
 
 // console.log(data)
 
-let head = [{ 'x': 0, 'y': 0 }]
-let tail = [{ 'x': 0, 'y': 0 }]
-let tailText = ['0 + 0']
+let head = { 'x': 0, 'y': 0 }
+let tail = { 'x': 0, 'y': 0 }
+let tailText = []
 
 for (let i = 0; i < data.length; i++) {
     let command = data[i].split(' ')
     let direction = command[0]
     let numMoves = parseInt(command[1])
-    let lastHspot, lastTspot, newTspot
-    let secondToLastHspot
+    let prevHead
+    let newTspot
     if (direction == 'R') {
         for (let i = 0; i < numMoves; i++) {
-            lastHspot = head[head.length - 1]
-            lastTspot = tail[tail.length - 1]
-            head.push({
-                'x': lastHspot['x'] + 1, 'y': lastHspot['y']
-            })
-            lastHspot = head[head.length - 1]
-            secondToLastHspot = head[head.length - 2]
-            //helper function to move T if needed
-            newTspot = moveT(lastHspot, lastTspot, secondToLastHspot)
+            prevHead = { 'x': head['x'], 'y': head['y'] }
+            head['x'] += 1
+            newTspot = moveT(head, tail, prevHead)
             if (newTspot) {
-                tail.push(newTspot)
-                tailText.push(`${newTspot['x']} + ${newTspot['y']}`)
+                tail = { 'x': newTspot['x'], 'y': newTspot['y'] }
+                tailText.push(`${tail['x']} + ${tail['y']}`)
             }
         }
     } else if (direction == 'L') {
         for (let i = 0; i < numMoves; i++) {
-            lastHspot = head[head.length - 1]
-            lastTspot = tail[tail.length - 1]
-            head.push({
-                'x': lastHspot['x'] - 1, 'y': lastHspot['y']
-            })
-            lastHspot = head[head.length - 1]
-            secondToLastHspot = head[head.length - 2]
-            //helper function to move T if needed
-            newTspot = moveT(lastHspot, lastTspot, secondToLastHspot)
+            prevHead = { 'x': head['x'], 'y': head['y'] }
+            head['x'] -= 1
+            newTspot = moveT(head, tail, prevHead)
             if (newTspot) {
-                tail.push(newTspot)
-                tailText.push(`${newTspot['x']} + ${newTspot['y']}`)
+                tail = { 'x': newTspot['x'], 'y': newTspot['y'] }
+                tailText.push(`${tail['x']} + ${tail['y']}`)
             }
         }
     } else if (direction == 'U') {
         for (let i = 0; i < numMoves; i++) {
-            lastHspot = head[head.length - 1]
-            lastTspot = tail[tail.length - 1]
-            head.push({
-                'x': lastHspot['x'], 'y': lastHspot['y'] + 1
-            })
-            lastHspot = head[head.length - 1]
-            secondToLastHspot = head[head.length - 2]
-            //helper function to move T if needed
-            newTspot = moveT(lastHspot, lastTspot, secondToLastHspot)
+            prevHead = { 'x': head['x'], 'y': head['y'] }
+            head['y'] += 1
+            newTspot = moveT(head, tail, prevHead)
             if (newTspot) {
-                tail.push(newTspot)
-                tailText.push(`${newTspot['x']} + ${newTspot['y']}`)
+                tail = { 'x': newTspot['x'], 'y': newTspot['y'] }
+                tailText.push(`${tail['x']} + ${tail['y']}`)
             }
         }
     } else if (direction == 'D') {
         for (let i = 0; i < numMoves; i++) {
-            lastHspot = head[head.length - 1]
-            lastTspot = tail[tail.length - 1]
-            head.push({
-                'x': lastHspot['x'], 'y': lastHspot['y'] - 1
-            })
-            lastHspot = head[head.length - 1]
-            secondToLastHspot = head[head.length - 2]
-            //helper function to move T if needed
-            newTspot = moveT(lastHspot, lastTspot, secondToLastHspot)
+            prevHead = { 'x': head['x'], 'y': head['y'] }
+            head['y'] -= 1
+            newTspot = moveT(head, tail, prevHead)
             if (newTspot) {
-                tail.push(newTspot)
-                tailText.push(`${newTspot['x']} + ${newTspot['y']}`)
+                tail = { 'x': newTspot['x'], 'y': newTspot['y'] }
+                tailText.push(`${tail['x']} + ${tail['y']}`)
             }
         }
     }
@@ -95,4 +71,4 @@ function moveT(headSpot, tailSpot, secondToLastHspot) {
 }
 
 let setTspots = new Set(tailText)
-console.log("Part 1: ", setTspots.size) //Part 1: 5710
+console.log("Part 1: ", setTspots.size + 1) //Part 1: 5710

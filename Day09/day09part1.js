@@ -14,9 +14,7 @@ for (let i = 0; i < data.length; i++) {
     let command = data[i].split(' ')
     let direction = command[0]
     let numMoves = parseInt(command[1])
-    let lastHspot
-    let lastTspot
-    let newTspot
+    let lastHspot, lastTspot, newTspot
     let secondToLastHspot
     if (direction == 'R') {
         for (let i = 0; i < numMoves; i++) {
